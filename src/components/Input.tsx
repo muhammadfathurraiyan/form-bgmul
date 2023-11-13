@@ -24,11 +24,15 @@ type DistrictType = {
 const Input = () => {
   const [datasProv, setDataProv] = useState<ProvinceType>();
   const [provId, setProvId] = useState("");
+  const [selProv, setSelProv] = useState("");
   const refProv = useRef<HTMLSelectElement>(null);
   const [datasReg, setDataReg] = useState<RegencyType>();
   const [regId, setRegId] = useState("");
+  const [selReg, setSelReg] = useState("");
   const refReg = useRef<HTMLSelectElement>(null);
   const [datasDis, setDataDis] = useState<DistrictType>();
+  const [selDis, setSelDis] = useState("");
+  const refDis = useRef<HTMLSelectElement>(null);
 
   const apiProv = async () => {
     const api = await fetch(
@@ -53,7 +57,7 @@ const Input = () => {
   const OptionsProv = () => {
     if (datasProv) {
       return datasProv.map((data: ProvinceType) => (
-        <option key={data.id} id={data.id} value={data.id}>
+        <option key={data.id} id={data.id} value={`${data.name},${data.id}`}>
           {data.name}
         </option>
       ));
@@ -62,7 +66,10 @@ const Input = () => {
 
   const handleProvId = () => {
     if (refProv.current) {
-      setProvId(refProv.current.value);
+      const array = refProv.current.value;
+      const data = array.split(",");
+      setProvId(data[1]);
+      setSelProv(array);
     }
   };
 
@@ -92,7 +99,7 @@ const Input = () => {
   const OptionsReg = () => {
     if (datasReg) {
       return datasReg.map((data: ProvinceType) => (
-        <option key={data.id} id={data.id} value={data.id}>
+        <option key={data.id} id={data.id} value={`${data.name},${data.id}`}>
           {data.name}
         </option>
       ));
@@ -101,7 +108,10 @@ const Input = () => {
 
   const handleRegId = () => {
     if (refReg.current) {
-      setRegId(refReg.current.value);
+      const array = refReg.current.value;
+      const data = array.split(",");
+      setRegId(data[1]);
+      setSelReg(array);
     }
   };
 
@@ -128,10 +138,17 @@ const Input = () => {
     }
   }, [regId]);
 
+  const handleDisId = () => {
+    if (refDis.current) {
+      const array = refDis.current.value;
+      setSelDis(array);
+    }
+  };
+
   const OptionsDis = () => {
     if (datasDis) {
       return datasDis.map((data: DistrictType) => (
-        <option key={data.id} id={data.id} value={data.id}>
+        <option key={data.id} id={data.id} value={`${data.name},${data.id}`}>
           {data.name}
         </option>
       ));
@@ -145,6 +162,7 @@ const Input = () => {
           Nama:
         </label>
         <input
+          name="nama"
           className="p-1 border rounded border-neutral-500 bg-inherit"
           type="text"
         />
@@ -154,8 +172,10 @@ const Input = () => {
           Nomor Whatsapp:
         </label>
         <input
+          name="noWa"
           className="p-1 border rounded border-neutral-500 bg-inherit"
-          type="number"
+          type="string"
+          defaultValue="+62"
         />
       </div>
       <div className="flex flex-col w-full">
@@ -163,12 +183,13 @@ const Input = () => {
           Provinsi
         </label>
         <select
-          value={provId}
+          name="provinsi"
+          value={selProv}
           ref={refProv}
           onChange={handleProvId}
           className="p-1 border rounded border-neutral-500 bg-inherit"
         >
-          <option value="provId">--Pilih Provinsi--</option>
+          <option value="selProv">--Pilih Provinsi--</option>
           <OptionsProv />
         </select>
       </div>
@@ -177,12 +198,13 @@ const Input = () => {
           Kabupaten/Kota
         </label>
         <select
-          value={regId}
+          name="kabupatenKota"
+          value={selReg}
           ref={refReg}
           onChange={handleRegId}
           className="p-1 border rounded border-neutral-500 bg-inherit"
         >
-          <option value="regId">--Pilih Kabupaten/Kota--</option>
+          <option value="selReg">--Pilih Kabupaten/Kota--</option>
           <OptionsReg />
         </select>
       </div>
@@ -191,10 +213,13 @@ const Input = () => {
           Kecamatan
         </label>
         <select
-          defaultValue="disId"
+          name="kecamatan"
+          value={selDis}
+          ref={refDis}
+          onChange={handleDisId}
           className="p-1 border rounded border-neutral-500 bg-inherit"
         >
-          <option value="disId">--Pilih Kecamatan--</option>
+          <option value="selDis">--Pilih Kecamatan--</option>
           <OptionsDis />
         </select>
       </div>

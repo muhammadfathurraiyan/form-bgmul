@@ -9,3 +9,12 @@ datasource db {
   provider = "mongodb"
   url      = env("DATABASE_URL")
 }
+
+model Data {
+  id            String @id @default(auto()) @map("_id") @db.ObjectId
+  noWa          String @unique
+  nama          String
+  provinsi      String
+  kabupatenKota String
+  kecamatan     String
+}
