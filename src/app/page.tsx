@@ -1,3 +1,5 @@
+import Input from "@/components/Input";
+
 export default function Home() {
   return (
     <section className="p-4 h-screen flex items-center justify-center">
@@ -5,7 +7,7 @@ export default function Home() {
         className="bg-neutral-50 p-4 flex flex-col border border-neutral-600 gap-4 max-w-md"
         action=""
       >
-        <div className="flex flex-col w-full">
+        {/* <div className="flex flex-col w-full">
           <label className="text-xs font-medium" htmlFor="">
             Nomor NIK:
           </label>
@@ -40,19 +42,9 @@ export default function Home() {
               </svg>
             </button>
           </div>
-        </div>
-        <div className="flex flex-col w-full">
-          <label className="text-xs font-medium" htmlFor="">
-            Nomor Whatsapp:
-          </label>
-          <input
-            className="p-2 border rounded border-neutral-500 bg-inherit"
-            type="number"
-          />
-        </div>
-        <button className="p-2 mt-2 rounded bg-orange-600 text-neutral-50">
-          Submit
-        </button>
+        </div> */}
+
+        <Input />
       </form>
     </section>
   );
