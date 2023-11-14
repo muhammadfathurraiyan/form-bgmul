@@ -10,11 +10,11 @@ export default function Home() {
   const [error, setError] = useState("");
   const ref = useRef<HTMLFormElement>(null);
   const clientAction = async (data: FormData) => {
-    const prov = `${data.get("provinsi")}`;
+    const prov = `,${data.get("provinsi")}`;
     const dataProv = prov.split(",");
-    const kabKot = `${data.get("kabupatenKota")}`;
+    const kabKot = `,${data.get("kabupatenKota")}`;
     const dataKabKot = kabKot.split(",");
-    const kec = `${data.get("kecamatan")}`;
+    const kec = `,${data.get("kecamatan")}`;
     const dataKec = kec.split(",");
 
     const wa = `${data.get("noWa")}`;
