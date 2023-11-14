@@ -175,7 +175,6 @@ const Input = () => {
           name="noWa"
           className="p-1 border rounded border-neutral-500 bg-inherit"
           type="string"
-          defaultValue="+62"
         />
       </div>
       <div className="flex flex-col w-full">
@@ -195,7 +194,7 @@ const Input = () => {
       </div>
       <div className="flex flex-col w-full">
         <label className="text-xs font-medium" htmlFor="">
-          Kabupaten/Kota
+          Kabupaten/Kota :
         </label>
         <select
           name="kabupatenKota"
@@ -210,7 +209,7 @@ const Input = () => {
       </div>
       <div className="flex flex-col w-full">
         <label className="text-xs font-medium" htmlFor="">
-          Kecamatan
+          Kecamatan :
         </label>
         <select
           name="kecamatan"
@@ -223,7 +222,7 @@ const Input = () => {
           <OptionsDis />
         </select>
       </div>
-      <button className="p-1 mt-2 rounded bg-orange-600 text-neutral-50">
+      <button className="p-1 mt-2 rounded bg-[#ED1B24] text-neutral-50">
         Submit
       </button>
     </>
