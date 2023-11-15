@@ -171,7 +171,7 @@ const Input = () => {
       </div>
       <div className="flex flex-col w-full">
         <label className="text-xs font-medium" htmlFor="">
-          Provinsi
+          Provinsi :
         </label>
         <Select
           placeholder="Pilih Provinsi"
