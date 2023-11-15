@@ -17,6 +17,5 @@ export const createData = async (newData: unknown) => {
   await prisma.data.create({
     data: result.data,
   });
-
   revalidatePath("/");
 };

@@ -1,5 +1,8 @@
 "use client";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
+import Select from "react-select";
+// @ts-ignore
+import { ValueType } from "react-select";
 
 type ProvinceType = {
   map: any;
@@ -21,18 +24,23 @@ type DistrictType = {
   name: string;
 };
 
+type Option = {
+  value: string;
+  label: string;
+};
+
 const Input = () => {
   const [datasProv, setDataProv] = useState<ProvinceType>();
   const [provId, setProvId] = useState("");
-  const [selProv, setSelProv] = useState("");
-  const refProv = useRef<HTMLSelectElement>(null);
+  const [selectedProvOption, setSelectedProvOption] =
+    useState<ValueType<Option>>(null);
   const [datasReg, setDataReg] = useState<RegencyType>();
   const [regId, setRegId] = useState("");
-  const [selReg, setSelReg] = useState("");
-  const refReg = useRef<HTMLSelectElement>(null);
+  const [selectedRegOption, setSelectedRegOption] =
+    useState<ValueType<Option>>(null);
   const [datasDis, setDataDis] = useState<DistrictType>();
-  const [selDis, setSelDis] = useState("");
-  const refDis = useRef<HTMLSelectElement>(null);
+  const [selectedDisOption, setSelectedDisOption] =
+    useState<ValueType<Option>>(null);
 
   const apiProv = async () => {
     const api = await fetch(
@@ -54,24 +62,21 @@ const Input = () => {
     apiProv();
   }, []);
 
-  const OptionsProv = () => {
-    if (datasProv) {
-      return datasProv.map((data: ProvinceType) => (
-        <option key={data.id} id={data.id} value={`${data.name},${data.id}`}>
-          {data.name}
-        </option>
-      ));
+  const OptionsProv = datasProv?.map((data: ProvinceType) => ({
+    label: data.name,
+    value: `${data.name},${data.id}`,
+  }));
+
+  const handleProvId = () => {
+    if (selectedProvOption) {
+      const data = selectedProvOption.value.split(",");
+      setProvId(data[1]);
     }
   };
 
-  const handleProvId = () => {
-    if (refProv.current) {
-      const array = refProv.current.value;
-      const data = array.split(",");
-      setProvId(data[1]);
-      setSelProv(array);
-    }
-  };
+  useEffect(() => {
+    handleProvId();
+  }, [selectedProvOption]);
 
   const apiReg = async () => {
     const api = await fetch(
@@ -96,24 +101,21 @@ const Input = () => {
     }
   }, [provId]);
 
-  const OptionsReg = () => {
-    if (datasReg) {
-      return datasReg.map((data: ProvinceType) => (
-        <option key={data.id} id={data.id} value={`${data.name},${data.id}`}>
-          {data.name}
-        </option>
-      ));
+  const OptionsReg = datasReg?.map((data: RegencyType) => ({
+    label: data.name,
+    value: `${data.name},${data.id}`,
+  }));
+
+  const handleRegId = () => {
+    if (selectedRegOption) {
+      const data = selectedRegOption.value.split(",");
+      setRegId(data[1]);
     }
   };
 
-  const handleRegId = () => {
-    if (refReg.current) {
-      const array = refReg.current.value;
-      const data = array.split(",");
-      setRegId(data[1]);
-      setSelReg(array);
-    }
-  };
+  useEffect(() => {
+    handleRegId();
+  }, [selectedRegOption]);
 
   const apiDis = async () => {
     const api = await fetch(
@@ -138,22 +140,10 @@ const Input = () => {
     }
   }, [regId]);
 
-  const handleDisId = () => {
-    if (refDis.current) {
-      const array = refDis.current.value;
-      setSelDis(array);
-    }
-  };
-
-  const OptionsDis = () => {
-    if (datasDis) {
-      return datasDis.map((data: DistrictType) => (
-        <option key={data.id} id={data.id} value={`${data.name},${data.id}`}>
-          {data.name}
-        </option>
-      ));
-    }
-  };
+  const OptionsDis = datasDis?.map((data: DistrictType) => ({
+    label: data.name,
+    value: `${data.name},${data.id}`,
+  }));
 
   return (
     <>
@@ -162,8 +152,9 @@ const Input = () => {
           Nama:
         </label>
         <input
+          placeholder="John Doe"
           name="nama"
-          className="p-1 border rounded border-neutral-500 bg-inherit"
+          className="p-2 border rounded border-neutral-500 bg-inherit"
           type="text"
         />
       </div>
@@ -172,8 +163,9 @@ const Input = () => {
           Nomor Whatsapp:
         </label>
         <input
+          placeholder="+6287654321245"
           name="noWa"
-          className="p-1 border rounded border-neutral-500 bg-inherit"
+          className="p-2 border rounded border-neutral-500 bg-inherit"
           type="string"
         />
       </div>
@@ -181,48 +173,43 @@ const Input = () => {
         <label className="text-xs font-medium" htmlFor="">
           Provinsi
         </label>
-        <select
+        <Select
+          placeholder="Pilih Provinsi"
           name="provinsi"
-          value={selProv}
-          ref={refProv}
-          onChange={handleProvId}
-          className="p-1 border rounded border-neutral-500 bg-inherit"
-        >
-          <option value="selProv">--Pilih Provinsi--</option>
-          <OptionsProv />
-        </select>
+          value={selectedProvOption}
+          options={OptionsProv}
+          onChange={(e) => setSelectedProvOption(e)}
+          className=" border rounded border-neutral-500 bg-inherit"
+        />
       </div>
       <div className="flex flex-col w-full">
         <label className="text-xs font-medium" htmlFor="">
           Kabupaten/Kota :
         </label>
-        <select
+        <Select
+          placeholder="Pilih Kabupaten/Kota"
           name="kabupatenKota"
-          value={selReg}
-          ref={refReg}
-          onChange={handleRegId}
-          className="p-1 border rounded border-neutral-500 bg-inherit"
-        >
-          <option value="selReg">--Pilih Kabupaten/Kota--</option>
-          <OptionsReg />
-        </select>
+          value={selectedRegOption}
+          options={OptionsReg}
+          onChange={(e) => setSelectedRegOption(e)}
+          className=" border rounded border-neutral-500 bg-inherit"
+        />
       </div>
       <div className="flex flex-col w-full">
         <label className="text-xs font-medium" htmlFor="">
           Kecamatan :
         </label>
-        <select
+        <Select
+          placeholder="Pilih Kecamatan"
           name="kecamatan"
-          value={selDis}
-          ref={refDis}
-          onChange={handleDisId}
-          className="p-1 border rounded border-neutral-500 bg-inherit"
-        >
-          <option value="selDis">--Pilih Kecamatan--</option>
-          <OptionsDis />
-        </select>
+          value={selectedDisOption}
+          options={OptionsDis}
+          onChange={(e) => setSelectedDisOption(e)}
+          className=" border rounded border-neutral-500 bg-inherit"
+        />
       </div>
-      <button className="p-1 mt-2 rounded bg-[#ED1B24] text-neutral-50">
+      <div className="flex flex-col w-full"></div>
+      <button className="p-2 mt-2 rounded bg-[#ED1B24] text-neutral-50">
         Submit
       </button>
     </>

@@ -44,6 +44,7 @@ export default function Home() {
     } else {
       ref.current?.reset();
       setError("");
+      alert("terimakasih telah mengisi form, klik ok untuk lanjut");
     }
 
     const response = await createData(result.data);
@@ -53,7 +54,7 @@ export default function Home() {
   };
   return (
     <section className="p-4 min-h-screen flex flex-col items-center justify-center gap-4 relative">
-      <div className="w-full h-full absolute bg-[url('../../public/bg.jpg')] bg-center bg-no-repeat bg-cover"/>
+      <div className="w-full h-full absolute bg-[url('../../public/bg.jpg')] bg-center bg-no-repeat bg-cover" />
       <div className="lg:w-[800px] z-10 flex  rounded-lg shadow-[rgba(0,0,0,0.07)_0px_1px_2px,rgba(0,0,0,0.10)_0px_2px_4px,rgba(0,0,0,0.10)_0px_4px_8px,rgba(0,0,0,0.10)_0px_8px_16px,_rgba(0,0,0,0.10)_0px_16px_32px,rgba(0,0,0,0.10)_0px_32px_64px]">
         <div className="lg:w-1/2 max-md:hidden flex items-center justify-center rounded-l-lg bg-[#ED1B24]">
           <Image className="" src={Logo} width={0} height={0} alt="" />
@@ -72,7 +73,7 @@ export default function Home() {
               </p>
             </div>
             {error && <p className="text-red-500">{error}</p>}
-            <Input />
+            <Input error={error} />
           </form>
         </div>
       </div>
