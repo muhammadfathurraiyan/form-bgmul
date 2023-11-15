@@ -73,7 +73,7 @@ export default function Home() {
               </p>
             </div>
             {error && <p className="text-red-500">{error}</p>}
-            <Input error={error} />
+            <Input />
           </form>
         </div>
       </div>
