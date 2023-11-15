@@ -163,10 +163,10 @@ const Input = () => {
           Nomor Whatsapp:
         </label>
         <input
-          placeholder="+6287654321245"
+          placeholder="08765432123"
           name="noWa"
           className="p-2 border rounded border-neutral-500 bg-inherit"
-          type="string"
+          type="number"
         />
       </div>
       <div className="flex flex-col w-full">
