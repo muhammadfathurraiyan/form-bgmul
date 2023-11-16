@@ -4,7 +4,7 @@ import Input from "@/components/Input";
 import { dataSchema } from "@/lib/types";
 import Image from "next/image";
 import { useState, useRef } from "react";
-import Logo from "../../public/logo.png";
+import Logo from "../../public/ayo.png";
 
 export default function Form() {
   const [error, setError] = useState("");
@@ -53,27 +53,40 @@ export default function Form() {
     }
   };
   return (
-    <section className="px-24 py-20 min-h-screen flex flex-col items-center justify-center relative">
-      {/* <div className="w-full h-full absolute bg-[url('../../public/bg.jpg')] bg-center bg-no-repeat bg-cover" /> */}
-      <div className="lg:w-[800px] z-10 flex  rounded-lg shadow-[rgba(0,0,0,0.07)_0px_1px_2px,rgba(0,0,0,0.10)_0px_2px_4px,rgba(0,0,0,0.10)_0px_4px_8px,rgba(0,0,0,0.10)_0px_8px_16px,_rgba(0,0,0,0.10)_0px_16px_32px,rgba(0,0,0,0.10)_0px_32px_64px]">
-        <div className="lg:w-1/2 max-md:hidden flex items-center justify-center rounded-l-lg bg-[#ED1B24]">
-          <Image className="" src={Logo} width={0} height={0} alt="" />
+    <section
+      id="form"
+      className="px-24 max-lg:px-4 py-12 max-lg:py-6 flex flex-col items-center justify-center relative"
+    >
+      <Image
+        className="bg-red-600 lg:hidden rounded-full absolute w-20 -top-4 left-10 p-1 shadow-[rgba(0,0,0,0.07)_0px_1px_2px,rgba(0,0,0,0.10)_0px_2px_4px,rgba(0,0,0,0.10)_0px_4px_8px,rgba(0,0,0,0.10)_0px_8px_16px,_rgba(0,0,0,0.10)_0px_16px_32px,rgba(0,0,0,0.10)_0px_32px_64px]"
+        src={Logo}
+        width={0}
+        height={0}
+        alt=""
+      />
+      <div className="w-[800px] max-lg:pt-8 max-lg:w-full flex  rounded-lg shadow-[rgba(0,0,0,0.07)_0px_1px_2px,rgba(0,0,0,0.10)_0px_2px_4px,rgba(0,0,0,0.10)_0px_4px_8px,rgba(0,0,0,0.10)_0px_8px_16px,_rgba(0,0,0,0.10)_0px_16px_32px,rgba(0,0,0,0.10)_0px_32px_64px]">
+        <div className="lg:w-1/2 max-lg:hidden p-4 flex items-center justify-center rounded-l-lg bg-red-600">
+          <Image
+            className="bg-red-600 rounded-full shadow-[rgba(0,0,0,0.07)_0px_1px_2px,rgba(0,0,0,0.10)_0px_2px_4px,rgba(0,0,0,0.10)_0px_4px_8px,rgba(0,0,0,0.10)_0px_8px_16px,_rgba(0,0,0,0.10)_0px_16px_32px,rgba(0,0,0,0.10)_0px_32px_64px]"
+            src={Logo}
+            width={0}
+            height={0}
+            alt=""
+          />
         </div>
-        <div className="lg:w-1/2">
+        <div className="w-1/2 max-lg:w-full">
           <form
             ref={ref}
-            className="w-full bg-neutral-50 p-6  flex flex-col max-md:rounded-l-lg rounded-r-lg gap-4"
+            className="w-full bg-white p-6 flex flex-col max-md:rounded-l-lg rounded-r-lg gap-3"
             action={clientAction}
           >
             <div>
-              <h1 className="font-bold text-3xl">Form Pemilu</h1>
+              <h1 className="font-bold text-3xl">Ayo Gabung</h1>
               <p className="font-medium">
-                Ayo kita sukseskan PEMILU serentak tahun 2024 !!! INGAT 14
-                FEBRUARI 2024 !!!
+                Daftar & ajak teman makin rame makin seru.
               </p>
             </div>
-            {error && <p className="text-red-500">{error}</p>}
-            <Input />
+            <Input error={error} />
           </form>
         </div>
       </div>

@@ -7,7 +7,7 @@ export default function page() {
   return (
     <>
       <Header />
-      <main className="bg-neutral-100">
+      <main className="bg-white">
         <Home />
         <Form />
       </main>

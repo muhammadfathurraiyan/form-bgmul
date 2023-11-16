@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import Select from "react-select";
 // @ts-ignore
 import { ValueType } from "react-select";
+import { FaUser, FaWhatsapp } from "react-icons/fa";
 
 type ProvinceType = {
   map: any;
@@ -29,7 +30,7 @@ type Option = {
   label: string;
 };
 
-const Input = () => {
+const Input = ({ error }: { error: string }) => {
   const [datasProv, setDataProv] = useState<ProvinceType>();
   const [provId, setProvId] = useState("");
   const [selectedProvOption, setSelectedProvOption] =
@@ -145,71 +146,101 @@ const Input = () => {
     value: `${data.name},${data.id}`,
   }));
 
+  console.log(error);
+  const Error = () => {
+    if (error.includes("Harap isi nama.")) {
+      return <p>Harap isi nama.</p>;
+    }
+  };
+
   return (
     <>
-      <div className="flex flex-col w-full">
+      <div className="relative flex flex-col w-full">
         <label className="text-xs font-medium" htmlFor="">
           Nama:
         </label>
+        <FaUser className="absolute top-7 text-lg text-neutral-400 left-3" />
         <input
-          placeholder="John Doe"
+          autoFocus
+          placeholder="Budiman"
           name="nama"
-          className="p-2 border rounded border-neutral-500 bg-inherit"
+          className="py-2 pl-9 pr-2 border rounded border-neutral-500"
           type="text"
         />
+        {error.includes("Harap isi nama.") && (
+          <p className="text-sm text-red-600">Harap isi nama.</p>
+        )}
+        {error.includes("Nama tidak boleh melampaui 50 karakter.") && (
+          <p className="text-sm text-red-600">
+            Nama tidak boleh melampaui 50 karakter.
+          </p>
+        )}
       </div>
-      <div className="flex flex-col w-full">
+      <div className="relative flex flex-col w-full">
         <label className="text-xs font-medium" htmlFor="">
           Nomor Whatsapp:
         </label>
+        <FaWhatsapp className="absolute top-6 text-2xl text-neutral-400 left-2" />
         <input
           placeholder="08765432123"
           name="noWa"
-          className="p-2 border rounded border-neutral-500 bg-inherit"
+          className="py-2 pl-9 pr-2 border rounded border-neutral-500"
           type="number"
         />
+        {error.includes("Nomor WA tidak valid.") && (
+          <p className="text-sm text-red-600">Nomor WA tidak valid.</p>
+        )}
       </div>
       <div className="flex flex-col w-full">
         <label className="text-xs font-medium" htmlFor="">
           Provinsi :
         </label>
         <Select
-          placeholder="Pilih Provinsi"
+          placeholder="Provinsi"
           name="provinsi"
           value={selectedProvOption}
           options={OptionsProv}
           onChange={(e) => setSelectedProvOption(e)}
           className=" border rounded border-neutral-500 bg-inherit"
         />
+        {error.includes("Provinsi tidak valid.") && (
+          <p className="text-sm text-red-600">Provinsi tidak valid.</p>
+        )}
       </div>
       <div className="flex flex-col w-full">
         <label className="text-xs font-medium" htmlFor="">
           Kabupaten/Kota :
         </label>
         <Select
-          placeholder="Pilih Kabupaten/Kota"
+          placeholder="Kabupaten / Kota"
           name="kabupatenKota"
           value={selectedRegOption}
           options={OptionsReg}
           onChange={(e) => setSelectedRegOption(e)}
           className=" border rounded border-neutral-500 bg-inherit"
         />
+        {error.includes("Kabupaten/Kota tidak valid.") && (
+          <p className="text-sm text-red-600">Kabupaten/Kota tidak valid.</p>
+        )}
       </div>
       <div className="flex flex-col w-full">
         <label className="text-xs font-medium" htmlFor="">
           Kecamatan :
         </label>
         <Select
-          placeholder="Pilih Kecamatan"
+          placeholder="Kecamatan"
           name="kecamatan"
           value={selectedDisOption}
           options={OptionsDis}
           onChange={(e) => setSelectedDisOption(e)}
           className=" border rounded border-neutral-500 bg-inherit"
         />
+        {error.includes("Kecamatan tidak valid.") && (
+          <p className="text-sm text-red-600">Kecamatan tidak valid.</p>
+        )}
       </div>
       <div className="flex flex-col w-full"></div>
-      <button className="p-2 mt-2 rounded bg-[#ED1B24] text-neutral-50">
+      <button className="p-2 mt-1 rounded bg-[#ED1B24] text-neutral-50">
         Submit
       </button>
     </>
