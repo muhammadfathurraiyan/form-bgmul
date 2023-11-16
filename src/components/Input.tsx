@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Select from "react-select";
 // @ts-ignore
 import { ValueType } from "react-select";
@@ -42,6 +42,12 @@ const Input = ({ error }: { error: string }) => {
   const [datasDis, setDataDis] = useState<DistrictType>();
   const [selectedDisOption, setSelectedDisOption] =
     useState<ValueType<Option>>(null);
+  const [button, setButton] = useState(false);
+
+  const [nama, setNama] = useState("");
+  const namaRef = useRef<HTMLInputElement>(null);
+  const [wa, setWa] = useState("");
+  const waRef = useRef<HTMLInputElement>(null);
 
   const apiProv = async () => {
     const api = await fetch(
@@ -146,13 +152,6 @@ const Input = ({ error }: { error: string }) => {
     value: `${data.name},${data.id}`,
   }));
 
-  console.log(error);
-  const Error = () => {
-    if (error.includes("Harap isi nama.")) {
-      return <p>Harap isi nama.</p>;
-    }
-  };
-
   return (
     <>
       <div className="relative flex flex-col w-full">
@@ -166,6 +165,8 @@ const Input = ({ error }: { error: string }) => {
           name="nama"
           className="py-2 pl-9 pr-2 border rounded border-neutral-500"
           type="text"
+          value={nama}
+          onChange={(e) => setNama(e.target.value)}
         />
         {error.includes("Harap isi nama.") && (
           <p className="text-sm text-red-600">Harap isi nama.</p>
@@ -186,6 +187,8 @@ const Input = ({ error }: { error: string }) => {
           name="noWa"
           className="py-2 pl-9 pr-2 border rounded border-neutral-500"
           type="number"
+          value={wa}
+          onChange={(e) => setWa(e.target.value)}
         />
         {error.includes("Nomor WA tidak valid.") && (
           <p className="text-sm text-red-600">Nomor WA tidak valid.</p>
@@ -239,9 +242,34 @@ const Input = ({ error }: { error: string }) => {
           <p className="text-sm text-red-600">Kecamatan tidak valid.</p>
         )}
       </div>
-      <div className="flex flex-col w-full"></div>
-      <button className="p-2 mt-1 rounded bg-[#ED1B24] text-neutral-50">
-        Submit
+      <div className="flex flex-col w-full">
+        <div className="gap-2 flex items-center">
+          <input required type="checkbox" />
+          <label htmlFor="" className="text-sm font-medium">
+            Saya siap untuk tidak golput.
+          </label>
+        </div>
+        <div className="gap-2 flex items-center">
+          <input required type="checkbox" />
+          <label htmlFor="" className="text-sm font-medium">
+            Saya siap memilih berdasarkan hati nurani.
+          </label>
+        </div>
+        <div className="gap-2 flex items-center">
+          <input required type="checkbox" />
+          <label htmlFor="" className="text-sm font-medium">
+            Saya siap untuk menolak politik uang.
+          </label>
+        </div>
+        <div className="gap-2 flex items-center">
+          <input required type="checkbox" />
+          <label htmlFor="" className="text-sm font-medium">
+            Saya siap untuk menanggkal hoax yang ada.
+          </label>
+        </div>
+      </div>
+      <button className="py-2 px-4 cursor-pointer hover:bg-red-700 text-center text-white duration-300 bg-red-600 border border-red-700 rounded-md shadow-[rgba(0,0,0,0.07)_0px_1px_2px,rgba(0,0,0,0.10)_0px_2px_4px,rgba(0,0,0,0.10)_0px_4px_8px,rgba(0,0,0,0.10)_0px_8px_16px,_rgba(0,0,0,0.10)_0px_16px_32px,rgba(0,0,0,0.10)_0px_32px_64px]">
+        Siap Gabung!
       </button>
     </>
   );

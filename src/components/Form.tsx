@@ -5,10 +5,22 @@ import { dataSchema } from "@/lib/types";
 import Image from "next/image";
 import { useState, useRef } from "react";
 import Logo from "../../public/ayo.png";
+import withReactContent from "sweetalert2-react-content";
+import Swal from "sweetalert2";
 
 export default function Form() {
   const [error, setError] = useState("");
   const ref = useRef<HTMLFormElement>(null);
+
+  const showSwal = (data: any) => {
+    withReactContent(Swal).fire({
+      title: "Terimakasih",
+      text: `Terimakasih ${data.nama} telah bersedia untuk mendaftar admin akan segera melakukan kontak pada nomor ${data.noWa} untuk pemberian biaya operasional berupa syarat sebesar Rp. 500.000`,
+      confirmButtonText: "Siap Bergabung!",
+      confirmButtonColor: "#DC2626",
+    });
+  };
+
   const clientAction = async (data: FormData) => {
     const prov = `,${data.get("provinsi")}`;
     const dataProv = prov.split(",");
@@ -44,7 +56,7 @@ export default function Form() {
     } else {
       ref.current?.reset();
       setError("");
-      alert("terimakasih telah mengisi form, klik ok untuk lanjut");
+      showSwal(newData);
     }
 
     const response = await createData(result.data);
