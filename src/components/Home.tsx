@@ -21,6 +21,7 @@ const Home = () => {
       <div className="max-lg:-order-1">
         <Image
           className="rounded-2xl"
+          priority
           src={Logo}
           alt="foto"
           width={500}

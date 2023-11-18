@@ -1,9 +1,9 @@
 "use client";
-import { createData, verifyCaptcha } from "@/action/action";
+import { createData } from "@/action/action";
 import Input from "@/components/Input";
 import { dataSchema } from "@/lib/types";
 import Image from "next/image";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import Logo from "../../public/ayo.png";
 import withReactContent from "sweetalert2-react-content";
 import Swal from "sweetalert2";
@@ -12,8 +12,8 @@ import ReCAPTCHA from "react-google-recaptcha";
 export default function Form() {
   const [error, setError] = useState("");
   const ref = useRef<HTMLFormElement>(null);
-  const recaptchaRef = useRef<ReCAPTCHA>(null);
-  const [isVerified, setIsverified] = useState<boolean>(false);
+
+  const [captcha, setCaptcha] = useState<string | null>()
 
   const showSwal = (data: any) => {
     withReactContent(Swal).fire({
@@ -68,55 +68,50 @@ export default function Form() {
     }
   };
 
-  async function handleCaptchaSubmission(token: string | null) {
-    // Server function to verify captcha
-    await verifyCaptcha(token)
-      .then(() => setIsverified(true))
-      .catch(() => setIsverified(false));
-  }
   return (
-    <section
-      id="form"
-      className="px-24 max-lg:px-4 py-12 max-lg:py-6 flex flex-col items-center justify-center relative"
-    >
-      <Image
-        className="bg-red-600 lg:hidden rounded-full absolute w-20 -top-4 left-10 p-1 shadow-[rgba(0,0,0,0.07)_0px_1px_2px,rgba(0,0,0,0.10)_0px_2px_4px,rgba(0,0,0,0.10)_0px_4px_8px,rgba(0,0,0,0.10)_0px_8px_16px,_rgba(0,0,0,0.10)_0px_16px_32px,rgba(0,0,0,0.10)_0px_32px_64px]"
-        src={Logo}
-        width={0}
-        height={0}
-        alt=""
-      />
-      <div className="w-[800px] max-lg:pt-8 max-lg:w-full flex  rounded-lg shadow-[rgba(0,0,0,0.07)_0px_1px_2px,rgba(0,0,0,0.10)_0px_2px_4px,rgba(0,0,0,0.10)_0px_4px_8px,rgba(0,0,0,0.10)_0px_8px_16px,_rgba(0,0,0,0.10)_0px_16px_32px,rgba(0,0,0,0.10)_0px_32px_64px]">
-        <div className="lg:w-1/2 max-lg:hidden p-4 flex items-center justify-center rounded-l-lg bg-red-600">
-          <Image
-            className="bg-red-600 rounded-full shadow-[rgba(0,0,0,0.07)_0px_1px_2px,rgba(0,0,0,0.10)_0px_2px_4px,rgba(0,0,0,0.10)_0px_4px_8px,rgba(0,0,0,0.10)_0px_8px_16px,_rgba(0,0,0,0.10)_0px_16px_32px,rgba(0,0,0,0.10)_0px_32px_64px]"
-            src={Logo}
-            width={0}
-            height={0}
-            alt=""
-          />
-        </div>
-        <div className="w-1/2 max-lg:w-full">
-          <form
-            ref={ref}
-            className="w-full bg-white p-6 flex flex-col max-md:rounded-l-lg rounded-r-lg gap-3"
-            action={clientAction}
-          >
-            <div>
-              <h1 className="font-bold text-3xl">Ayo Gabung</h1>
-              <p className="font-medium">
-                Daftar & ajak teman makin rame makin seru.
-              </p>
-            </div>
-            <ReCAPTCHA
-              sitekey="your-site-key"
-              ref={recaptchaRef}
-              onChange={handleCaptchaSubmission}
+    <>
+      <section
+        id="form"
+        className="px-24 max-lg:px-4 py-12 max-lg:py-6 flex flex-col items-center justify-center relative"
+      >
+        <Image
+          className="bg-red-600 lg:hidden rounded-full absolute w-20 -top-4 left-10 p-1 shadow-[rgba(0,0,0,0.07)_0px_1px_2px,rgba(0,0,0,0.10)_0px_2px_4px,rgba(0,0,0,0.10)_0px_4px_8px,rgba(0,0,0,0.10)_0px_8px_16px,_rgba(0,0,0,0.10)_0px_16px_32px,rgba(0,0,0,0.10)_0px_32px_64px]"
+          src={Logo}
+          width={0}
+          height={0}
+          alt="logo"
+        />
+        <div className="w-[800px] max-lg:pt-8 max-lg:w-full flex  rounded-lg shadow-[rgba(0,0,0,0.07)_0px_1px_2px,rgba(0,0,0,0.10)_0px_2px_4px,rgba(0,0,0,0.10)_0px_4px_8px,rgba(0,0,0,0.10)_0px_8px_16px,_rgba(0,0,0,0.10)_0px_16px_32px,rgba(0,0,0,0.10)_0px_32px_64px]">
+          <div className="lg:w-1/2 max-lg:hidden p-4 flex items-center justify-center rounded-l-lg bg-red-600">
+            <Image
+              className="bg-red-600 rounded-full shadow-[rgba(0,0,0,0.07)_0px_1px_2px,rgba(0,0,0,0.10)_0px_2px_4px,rgba(0,0,0,0.10)_0px_4px_8px,rgba(0,0,0,0.10)_0px_8px_16px,_rgba(0,0,0,0.10)_0px_16px_32px,rgba(0,0,0,0.10)_0px_32px_64px]"
+              src={Logo}
+              width={0}
+              height={0}
+              alt=""
             />
-            <Input error={error}  />
-          </form>
+          </div>
+          <div className="w-1/2 max-lg:w-full">
+            <form
+              ref={ref}
+              className="w-full bg-white p-6 flex flex-col max-md:rounded-l-lg rounded-r-lg gap-3"
+              action={clientAction}
+            >
+              <div>
+                <h1 className="font-bold text-3xl">Ayo Gabung</h1>
+                <p className="font-medium">
+                  Daftar & ajak teman makin rame makin seru.
+                </p>
+              </div>
+              <Input error={error} />
+              <ReCAPTCHA sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY!} />
+              <button className="g-recaptcha py-2 px-4 cursor-pointer hover:bg-red-700 text-center text-white duration-300 bg-red-600 border border-red-700 rounded-md shadow-[rgba(0,0,0,0.07)_0px_1px_2px,rgba(0,0,0,0.10)_0px_2px_4px,rgba(0,0,0,0.10)_0px_4px_8px,rgba(0,0,0,0.10)_0px_8px_16px,_rgba(0,0,0,0.10)_0px_16px_32px,rgba(0,0,0,0.10)_0px_32px_64px]">
+                Siap Gabung!
+              </button>
+            </form>
+          </div>
         </div>
-      </div>
-    </section>
+      </section>
+    </>
   );
 }

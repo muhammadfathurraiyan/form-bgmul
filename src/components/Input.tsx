@@ -199,6 +199,8 @@ const Input = ({ error }: { error: string }) => {
           Provinsi :
         </label>
         <Select
+          id="long-value-select"
+          instanceId="long-value-select"
           placeholder="Provinsi"
           name="provinsi"
           value={selectedProvOption}
@@ -216,6 +218,8 @@ const Input = ({ error }: { error: string }) => {
         </label>
         <Select
           placeholder="Kabupaten / Kota"
+          id="long-value-select"
+          instanceId="long-value-select"
           name="kabupatenKota"
           value={selectedRegOption}
           options={OptionsReg}
@@ -231,6 +235,8 @@ const Input = ({ error }: { error: string }) => {
           Kecamatan :
         </label>
         <Select
+          id="long-value-select"
+          instanceId="long-value-select"
           placeholder="Kecamatan"
           name="kecamatan"
           value={selectedDisOption}
@@ -268,9 +274,6 @@ const Input = ({ error }: { error: string }) => {
           </label>
         </div>
       </div>
-      <button className="py-2 px-4 cursor-pointer hover:bg-red-700 text-center text-white duration-300 bg-red-600 border border-red-700 rounded-md shadow-[rgba(0,0,0,0.07)_0px_1px_2px,rgba(0,0,0,0.10)_0px_2px_4px,rgba(0,0,0,0.10)_0px_4px_8px,rgba(0,0,0,0.10)_0px_8px_16px,_rgba(0,0,0,0.10)_0px_16px_32px,rgba(0,0,0,0.10)_0px_32px_64px]">
-        Siap Gabung!
-      </button>
     </>
   );
 };

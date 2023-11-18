@@ -20,7 +20,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
+    <html lang="id">
       <body className={`${openSans.className} text-neutral-900`}>
         <Header /> <main className="bg-white">{children}</main> <Footer />
       </body>
