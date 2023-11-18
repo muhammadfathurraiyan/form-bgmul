@@ -4,6 +4,7 @@ import Select from "react-select";
 // @ts-ignore
 import { ValueType } from "react-select";
 import { FaUser, FaWhatsapp } from "react-icons/fa";
+import axios from "axios";
 
 type ProvinceType = {
   map: any;
@@ -42,19 +43,12 @@ const Input = ({ error }: { error: string }) => {
   const [datasDis, setDataDis] = useState<DistrictType>();
   const [selectedDisOption, setSelectedDisOption] =
     useState<ValueType<Option>>(null);
-  const [button, setButton] = useState(false);
-
-  const [nama, setNama] = useState("");
-  const namaRef = useRef<HTMLInputElement>(null);
-  const [wa, setWa] = useState("");
-  const waRef = useRef<HTMLInputElement>(null);
 
   const apiProv = async () => {
-    const api = await fetch(
+    const response = await axios.get(
       `https://www.emsifa.com/api-wilayah-indonesia/api/provinces.json`
     );
-    const response = await api.json();
-    const data = response.map((res: ProvinceType) => ({
+    const data = response.data.map((res: ProvinceType) => ({
       id: res.id,
       name: res.name,
     }));
@@ -86,11 +80,10 @@ const Input = ({ error }: { error: string }) => {
   }, [selectedProvOption]);
 
   const apiReg = async () => {
-    const api = await fetch(
+    const response = await axios.get(
       `https://www.emsifa.com/api-wilayah-indonesia/api/regencies/${provId}.json`
     );
-    const response = await api.json();
-    const data = response.map((res: RegencyType) => ({
+    const data = response.data.map((res: RegencyType) => ({
       id: res.id,
       province_id: res.province_id,
       name: res.name,
@@ -125,11 +118,10 @@ const Input = ({ error }: { error: string }) => {
   }, [selectedRegOption]);
 
   const apiDis = async () => {
-    const api = await fetch(
+    const response = await axios.get(
       `https://www.emsifa.com/api-wilayah-indonesia/api/districts/${regId}.json`
     );
-    const response = await api.json();
-    const data = response.map((res: DistrictType) => ({
+    const data = response.data.map((res: DistrictType) => ({
       id: res.id,
       regency_id: res.regency_id,
       name: res.name,
@@ -165,8 +157,6 @@ const Input = ({ error }: { error: string }) => {
           name="nama"
           className="py-2 pl-9 pr-2 border rounded border-neutral-500"
           type="text"
-          value={nama}
-          onChange={(e) => setNama(e.target.value)}
         />
         {error.includes("Harap isi nama.") && (
           <p className="text-sm text-red-600">Harap isi nama.</p>
@@ -187,8 +177,6 @@ const Input = ({ error }: { error: string }) => {
           name="noWa"
           className="py-2 pl-9 pr-2 border rounded border-neutral-500"
           type="number"
-          value={wa}
-          onChange={(e) => setWa(e.target.value)}
         />
         {error.includes("Nomor WA tidak valid.") && (
           <p className="text-sm text-red-600">Nomor WA tidak valid.</p>

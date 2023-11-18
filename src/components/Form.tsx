@@ -1,19 +1,25 @@
 "use client";
-import { createData } from "@/action/action";
+import { createData, verifyCaptcha } from "@/action/action";
 import Input from "@/components/Input";
 import { dataSchema } from "@/lib/types";
 import Image from "next/image";
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef } from "react";
 import Logo from "../../public/ayo.png";
 import withReactContent from "sweetalert2-react-content";
 import Swal from "sweetalert2";
 import ReCAPTCHA from "react-google-recaptcha";
 
-export default function Form() {
+export default function Form({ refresh }: { refresh: () => void }) {
   const [error, setError] = useState("");
   const ref = useRef<HTMLFormElement>(null);
+  const recaptchaRef = useRef<ReCAPTCHA>(null);
+  const [isVerified, setIsverified] = useState<boolean>(false);
 
-  const [captcha, setCaptcha] = useState<string | null>()
+  async function handleCaptchaSubmission(token: string | null) {
+    await verifyCaptcha(token)
+      .then(() => setIsverified(true))
+      .catch(() => setIsverified(false));
+  }
 
   const showSwal = (data: any) => {
     withReactContent(Swal).fire({
@@ -59,6 +65,7 @@ export default function Form() {
     } else {
       ref.current?.reset();
       setError("");
+      refresh();
       showSwal(newData);
     }
 
@@ -80,6 +87,7 @@ export default function Form() {
           width={0}
           height={0}
           alt="logo"
+          priority
         />
         <div className="w-[800px] max-lg:pt-8 max-lg:w-full flex  rounded-lg shadow-[rgba(0,0,0,0.07)_0px_1px_2px,rgba(0,0,0,0.10)_0px_2px_4px,rgba(0,0,0,0.10)_0px_4px_8px,rgba(0,0,0,0.10)_0px_8px_16px,_rgba(0,0,0,0.10)_0px_16px_32px,rgba(0,0,0,0.10)_0px_32px_64px]">
           <div className="lg:w-1/2 max-lg:hidden p-4 flex items-center justify-center rounded-l-lg bg-red-600">
@@ -88,7 +96,8 @@ export default function Form() {
               src={Logo}
               width={0}
               height={0}
-              alt=""
+              alt="logo"
+              priority
             />
           </div>
           <div className="w-1/2 max-lg:w-full">
@@ -104,8 +113,19 @@ export default function Form() {
                 </p>
               </div>
               <Input error={error} />
-              <ReCAPTCHA sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY!} />
-              <button className="g-recaptcha py-2 px-4 cursor-pointer hover:bg-red-700 text-center text-white duration-300 bg-red-600 border border-red-700 rounded-md shadow-[rgba(0,0,0,0.07)_0px_1px_2px,rgba(0,0,0,0.10)_0px_2px_4px,rgba(0,0,0,0.10)_0px_4px_8px,rgba(0,0,0,0.10)_0px_8px_16px,_rgba(0,0,0,0.10)_0px_16px_32px,rgba(0,0,0,0.10)_0px_32px_64px]">
+              <ReCAPTCHA
+                ref={recaptchaRef}
+                onChange={handleCaptchaSubmission}
+                sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY!}
+              />
+              <button
+                disabled={!isVerified}
+                className={`${
+                  isVerified
+                    ? "bg-red-600 border-red-700 hover:bg-red-700"
+                    : "bg-red-600/80 border-red-400 cursor-default"
+                } py-2 px-4 cursor-pointer text-center text-white duration-300  border rounded-md shadow-[rgba(0,0,0,0.07)_0px_1px_2px,rgba(0,0,0,0.10)_0px_2px_4px,rgba(0,0,0,0.10)_0px_4px_8px,rgba(0,0,0,0.10)_0px_8px_16px,_rgba(0,0,0,0.10)_0px_16px_32px,rgba(0,0,0,0.10)_0px_32px_64px]`}
+              >
                 Siap Gabung!
               </button>
             </form>

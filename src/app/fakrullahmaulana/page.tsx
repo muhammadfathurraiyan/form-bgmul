@@ -29,7 +29,7 @@ export default async function page() {
                 <td className="px-6 py-2 border-r border-neutral-500">{data.provinsi}</td>
                 <td className="px-6 py-2 border-r border-neutral-500">{data.kabupatenKota}</td>
                 <td className="px-6 py-2 border-r border-neutral-500">{data.kecamatan}</td>
-                <td className="px-6 py-2 text-center"><Link href={`https://wa.me/${data.noWa}`}><FaWhatsapp size={20} /></Link></td>
+                <td className="px-6 py-2 text-center"><Link target="_blank" href={`https://wa.me/${data.noWa}`}><FaWhatsapp size={20} /></Link></td>
               </tr>
             ))}
           </tbody>
