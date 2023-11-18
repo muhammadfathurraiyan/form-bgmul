@@ -1,5 +1,5 @@
 "use client";
-import { createData } from "@/action/action";
+import { createData, verifyCaptcha } from "@/action/action";
 import Input from "@/components/Input";
 import { dataSchema } from "@/lib/types";
 import Image from "next/image";
@@ -7,10 +7,13 @@ import { useState, useRef } from "react";
 import Logo from "../../public/ayo.png";
 import withReactContent from "sweetalert2-react-content";
 import Swal from "sweetalert2";
+import ReCAPTCHA from "react-google-recaptcha";
 
 export default function Form() {
   const [error, setError] = useState("");
   const ref = useRef<HTMLFormElement>(null);
+  const recaptchaRef = useRef<ReCAPTCHA>(null);
+  const [isVerified, setIsverified] = useState<boolean>(false);
 
   const showSwal = (data: any) => {
     withReactContent(Swal).fire({
@@ -64,6 +67,13 @@ export default function Form() {
       setError(response.error);
     }
   };
+
+  async function handleCaptchaSubmission(token: string | null) {
+    // Server function to verify captcha
+    await verifyCaptcha(token)
+      .then(() => setIsverified(true))
+      .catch(() => setIsverified(false));
+  }
   return (
     <section
       id="form"
@@ -98,7 +108,12 @@ export default function Form() {
                 Daftar & ajak teman makin rame makin seru.
               </p>
             </div>
-            <Input error={error} />
+            <ReCAPTCHA
+              sitekey="your-site-key"
+              ref={recaptchaRef}
+              onChange={handleCaptchaSubmission}
+            />
+            <Input error={error}  />
           </form>
         </div>
       </div>
