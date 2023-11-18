@@ -9,7 +9,7 @@ import withReactContent from "sweetalert2-react-content";
 import Swal from "sweetalert2";
 import ReCAPTCHA from "react-google-recaptcha";
 
-export default function Form({ refresh }: { refresh: () => void }) {
+export default function Form({ Refresh }: { Refresh: () => void }) {
   const [error, setError] = useState("");
   const ref = useRef<HTMLFormElement>(null);
   const recaptchaRef = useRef<ReCAPTCHA>(null);
@@ -65,7 +65,7 @@ export default function Form({ refresh }: { refresh: () => void }) {
     } else {
       ref.current?.reset();
       setError("");
-      refresh();
+      Refresh();
       showSwal(newData);
     }
 

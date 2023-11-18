@@ -4,14 +4,14 @@ import Home from "@/components/Home";
 import { useRouter } from "next/navigation";
 
 export default function page() {
-  const router = useRouter();
-  const refresh = () => {
-    router.refresh();
+  const Router = useRouter();
+  const Refresh = () => {
+    Router.refresh();
   };
   return (
     <>
       <Home />
-      <Form refresh={refresh} />
+      <Form refresh={Refresh} />
     </>
   );
 }
