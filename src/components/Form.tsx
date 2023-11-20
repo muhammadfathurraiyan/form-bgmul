@@ -8,6 +8,7 @@ import Logo from "../../public/ayo.png";
 import withReactContent from "sweetalert2-react-content";
 import Swal from "sweetalert2";
 import ReCAPTCHA from "react-google-recaptcha";
+import prisma from "@/lib/prisma";
 
 export default function Form({ Refresh }: { Refresh: () => void }) {
   const [error, setError] = useState("");
@@ -75,6 +76,15 @@ export default function Form({ Refresh }: { Refresh: () => void }) {
     }
   };
 
+  const TotalData = async () => {
+    const data = await prisma.data.findMany();
+    return (
+      <p className="absolute bottom-[4.7rem] text-xs font-semibold">
+        Form telah diisi sebanyak : {6400 + data.length}
+      </p>
+    );
+  };
+
   return (
     <>
       <section
@@ -103,7 +113,7 @@ export default function Form({ Refresh }: { Refresh: () => void }) {
           <div className="w-1/2 max-lg:w-full">
             <form
               ref={ref}
-              className="w-full bg-white p-6 flex flex-col max-md:rounded-l-lg rounded-r-lg gap-3"
+              className="w-full relative bg-white p-6 flex flex-col max-md:rounded-l-lg rounded-r-lg gap-3"
               action={clientAction}
             >
               <div>
@@ -118,13 +128,14 @@ export default function Form({ Refresh }: { Refresh: () => void }) {
                 onChange={handleCaptchaSubmission}
                 sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY!}
               />
+              <TotalData />
               <button
                 disabled={!isVerified}
                 className={`${
                   isVerified
                     ? "bg-red-600 border-red-700 hover:bg-red-700"
                     : "bg-red-600/80 border-red-400 cursor-default"
-                } py-2 px-4 cursor-pointer text-center text-white duration-300  border rounded-md shadow-[rgba(0,0,0,0.07)_0px_1px_2px,rgba(0,0,0,0.10)_0px_2px_4px,rgba(0,0,0,0.10)_0px_4px_8px,rgba(0,0,0,0.10)_0px_8px_16px,_rgba(0,0,0,0.10)_0px_16px_32px,rgba(0,0,0,0.10)_0px_32px_64px]`}
+                } mt-5 py-2 px-4 cursor-pointer text-center text-white duration-300  border rounded-md shadow-[rgba(0,0,0,0.07)_0px_1px_2px,rgba(0,0,0,0.10)_0px_2px_4px,rgba(0,0,0,0.10)_0px_4px_8px,rgba(0,0,0,0.10)_0px_8px_16px,_rgba(0,0,0,0.10)_0px_16px_32px,rgba(0,0,0,0.10)_0px_32px_64px]`}
               >
                 Siap Gabung!
               </button>
