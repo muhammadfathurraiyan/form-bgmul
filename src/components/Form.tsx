@@ -3,18 +3,23 @@ import { createData, verifyCaptcha } from "@/action/action";
 import Input from "@/components/Input";
 import { dataSchema } from "@/lib/types";
 import Image from "next/image";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import Logo from "../../public/ayo.png";
 import withReactContent from "sweetalert2-react-content";
 import Swal from "sweetalert2";
 import ReCAPTCHA from "react-google-recaptcha";
-import prisma from "@/lib/prisma";
 
-export default function Form({ Refresh }: { Refresh: () => void }) {
+export default function Form({ datas }: { datas: number }) {
   const [error, setError] = useState("");
   const ref = useRef<HTMLFormElement>(null);
   const recaptchaRef = useRef<ReCAPTCHA>(null);
   const [isVerified, setIsverified] = useState<boolean>(false);
+
+  const [dataTotal, setDataTotal] = useState(1);
+  useEffect(() => {
+    setDataTotal(datas)
+  }, [dataTotal])
+  
 
   async function handleCaptchaSubmission(token: string | null) {
     await verifyCaptcha(token)
@@ -66,7 +71,7 @@ export default function Form({ Refresh }: { Refresh: () => void }) {
     } else {
       ref.current?.reset();
       setError("");
-      Refresh();
+      // Refresh();
       showSwal(newData);
     }
 
@@ -74,15 +79,6 @@ export default function Form({ Refresh }: { Refresh: () => void }) {
     if (response?.error) {
       setError(response.error);
     }
-  };
-
-  const TotalData = async () => {
-    const data = await prisma.data.findMany();
-    return (
-      <p className="absolute bottom-[4.7rem] text-xs font-semibold">
-        Form telah diisi sebanyak : {6400 + data.length}
-      </p>
-    );
   };
 
   return (
@@ -128,7 +124,9 @@ export default function Form({ Refresh }: { Refresh: () => void }) {
                 onChange={handleCaptchaSubmission}
                 sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY!}
               />
-              <TotalData />
+              <p className="absolute bottom-[4.7rem] text-xs font-semibold">
+                Form telah diisi sebanyak : {dataTotal}
+              </p>
               <button
                 disabled={!isVerified}
                 className={`${
